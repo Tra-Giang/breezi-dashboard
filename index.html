@@ -141,7 +141,17 @@
         <button class = "inactive">On</button>
         <button class = "inactive">Off</button>
       </p>
-      <p>AQI Threshold: <input type = "range" min = "0" max = "200" value = "100"></p>
+      <p>
+        AQI Threshold: 
+        <input type="range" id="aqi-threshold" min="0" max="300" value="100" oninput="updateAQIValue(this.value)">
+        <span id="aqi-value-display">100</span>
+      </p>
+      <script>
+        // Update AQI Threshold display dynamically
+        function updateAQIValue(value) {
+          document.getElementById('aqi-value-display').textContent = value;
+        }
+      </script>
       <p>Timer: <input type = "time"></p>
     </div>
   </div>
