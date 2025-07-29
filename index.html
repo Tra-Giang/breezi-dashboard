@@ -1,88 +1,155 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html> 
+<html lang = "en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Breezi – Air Purifier Dashboard</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset = "UTF-8"> 
+  <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
+  <title> Breezi Air Purifier Dashboard </title>
+  <script src = "https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href = "https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel = "stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #f6f8fc; color: #222; }
-    header { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: #f6f8fc;
+      color: #222;
+      line-height: 1.6;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 24px;
+      background: #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    }
     header img.logo { height: 40px; }
     .lang-user { display: flex; align-items: center; gap: 15px; }
+    .lang-user button {
+      background: transparent;
+      border: 1px solid #ddd;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+    }
     .container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px; }
-    .card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 3px 8px rgba(0,0,0,0.05); }
-    h2 { margin-top: 0; font-size: 20px; }
-    .device-status span.online { color: green; }
-    .device-status span.offline { color: red; }
-    .controls button { margin: 5px; padding: 8px 15px; border: none; border-radius: 8px; cursor: pointer; }
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+    }
+    h2 { margin-top: 0; font-size: 20px; font-weight: 600; }
+    .device-status span.online { color: #28a745; font-weight: 500; }
+    .device-status span.offline { color: #d9534f; font-weight: 500; }
+    .controls button {
+      margin: 5px 4px;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+    }
     .controls button.active { background: #4caf50; color: white; }
     .controls button.inactive { background: #ccc; color: #333; }
-    .aqi-value { font-size: 48px; font-weight: bold; text-align: center; padding: 10px; border-radius: 10px; margin-bottom: 10px; color: #fff;}
-    .env-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .tabs button { margin: 5px; padding: 6px 10px; border: 1px solid #ccc; border-radius: 6px; cursor: pointer; background: #eee;}
-    footer { text-align: center; padding: 15px; background: #f0f0f0; margin-top: 20px; font-size: 14px; }
+    .aqi-value {
+      font-size: 48px;
+      font-weight: 600;
+      text-align: center;
+      padding: 14px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      color: #fff;
+      transition: background 0.3s ease;
+    }
+    .env-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-weight: 500;}
+    .tabs button {
+      margin: 5px;
+      padding: 6px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #f5f5f5;
+      font-weight: 500;
+    }
+    footer {
+      text-align: center;
+      padding: 18px;
+      background: #f0f0f0;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #555;
+    }
   </style>
 </head>
+
 <body>
-  <!-- Header -->
+  <!-- HEADER -->
   <header>
-    <img src="https://dummyimage.com/100x40/4caf50/fff&text=Breezi" alt="Breezi Logo" class="logo">
-    <div class="lang-user">
-      <button>EN</button><button>VI</button>
-      <img src="https://dummyimage.com/40x40/ccc/fff&text=U" alt="User Avatar" style="border-radius: 50%;">
+    <div class = "logo">
+      <svg width = "180" height = "50" viewBox = "0 0 180 50" xmlns = "http://www.w3.org/2000/svg">
+        <rect width = "180" height = "50" rx = "10" fill = "#4CAF50"/>
+        <text x = "20" y = "32" font-family = "Poppins, Arial, sans-serif" font-size = "24" fill = "white" font-weight = "600">
+          Breezi Air Purifier
+        </text>
+        <path d = "M140 20 q10 -5 20 0" stroke = "white" stroke-width = "2" fill = "none" stroke-linecap = "round"/>
+        <path d = "M140 28 q10 -5 20 0" stroke = "white" stroke-width = "2" fill = "none" stroke-linecap = "round"/>
+        <path d = "M140 36 q10 -5 20 0" stroke = "white" stroke-width = "2" fill = "none" stroke-linecap = "round"/>
+      </svg>
+    </div>
+    <div class = "lang-user">
+      <button> EN </button> <button> VI </button>
     </div>
   </header>
 
-  <!-- Device Overview & Controls -->
-  <div class="container">
-    <div class="card">
+  <!-- DEVICE OVERVIEW & CONTROLS -->
+  <div class = "container">
+    <div class = "card">
       <h2>Device Overview</h2>
-      <p><strong>Device:</strong> Breezi Mini Air Purifier</p>
-      <p><strong>Location:</strong> Living Room</p>
-      <p class="device-status"><strong>Status:</strong> <span class="online">Online</span></p>
+      <p class = "device-status"><strong>Status:</strong> <span class = "online">Online</span></p>
       <p><strong>Battery:</strong> 🔋 85%</p>
     </div>
-    <div class="card controls">
+    <div class = "card controls">
       <h2>Control Panel</h2>
       <p>Filter Fan:
-        <button class="active">Auto</button>
-        <button class="inactive">On</button>
-        <button class="inactive">Off</button>
+        <button class = "active">Auto</button>
+        <button class = "inactive">On</button>
+        <button class = "inactive">Off</button>
       </p>
       <p>Sterilization Mist:
-        <button class="active">Auto</button>
-        <button class="inactive">On</button>
-        <button class="inactive">Off</button>
+        <button class = "active">Auto</button>
+        <button class = "inactive">On</button>
+        <button class = "inactive">Off</button>
       </p>
-      <p>AQI Threshold: <input type="range" min="0" max="200" value="100"></p>
-      <p>Timer: <input type="time"></p>
+      <p>AQI Threshold: <input type = "range" min = "0" max = "200" value = "100"></p>
+      <p>Timer: <input type = "time"></p>
     </div>
   </div>
 
-  <!-- Real-time Air Quality -->
-  <div class="card" style="margin:20px;">
+  <!-- REAL-TIME AIR QUALITY -->
+  <div class = "card" style = "margin:20px;">
     <h2>Real-time Air Quality</h2>
-    <div id="aqi-box" class="aqi-value" style="background:#4caf50;">AQI: 42 (Good)</div>
+    <div id = "aqi-box" class = "aqi-value">AQI: 42 (Good)</div>
     <p>PM2.5: 12 μg/m³ | PM10: 20 μg/m³ | CO: 0.5 ppm | NO2: 10 ppb | SO2: 5 ppb | CO2: 450 ppm | VOCs: Low</p>
-    <p style="color: orange;">⚠️ AQI moderate, consider ventilation!</p>
+    <p style = "color: orange;">⚠️ AQI moderate, consider ventilation!</p>
   </div>
 
-  <!-- Environmental Data & Analytics -->
-  <div class="container">
-    <div class="card">
+  <!-- ENVIRONMENTAL DATA & ANALYTICS -->
+  <div class = "container">
+    <div class = "card">
       <h2>Environmental Data</h2>
-      <div class="env-grid">
+      <div class = "env-grid">
         <p>🌡 Temp: 26°C</p><p>💧 Humidity: 60%</p>
         <p>🌬 Pressure: 1012 hPa</p><p>⛅ Weather: Sunny</p>
       </div>
     </div>
-    <div class="card">
+    <div class = "card">
       <h2>Analytics & History</h2>
-      <div class="tabs">
+      <div class = "tabs">
         <button>Hour</button><button>Day</button><button>Week</button>
       </div>
-      <canvas id="aqiChart" height="100"></canvas>
+      <canvas id = "aqiChart" height = "100"></canvas>
       <p>History Log:</p>
       <ul>
         <li>[08:00] Filter Fan Auto Activated</li>
@@ -91,12 +158,37 @@
     </div>
   </div>
 
-  <!-- Footer -->
+  <!-- FOOTER -->
   <footer>
     📞 Support | 📄 User Manual | © 2025 Breezi
   </footer>
 
   <script>
+    // AQI Color Logic
+    function updateAQI(aqi) {
+      const aqiBox = document.getElementById('aqi-box');
+      const aqiWarning = document.getElementById('aqi-warning');
+      let color = '#4CAF50', text = "Good";
+      if (aqi > 300) { color = '#6A1B9A'; text = "Hazardous"; }
+      else if (aqi > 200) { color = '#9C27B0'; text = "Very Unhealthy"; }
+      else if (aqi > 150) { color = '#F44336'; text = "Unhealthy"; }
+      else if (aqi > 100) { color = '#FF9800'; text = "Unhealthy (Sensitive)"; }
+      else if (aqi > 50) { color = '#FFEB3B'; text = "Moderate"; }
+      else { color = '#4CAF50'; text = "Good"; }
+
+      aqiBox.style.background = color;
+      aqiBox.textContent = `AQI: ${aqi} (${text})`;
+      aqiWarning.style.color = color;
+      aqiWarning.textContent = aqi > 100 ? "⚠️ Poor AQI! Consider filtration!" : "✅ Air quality is fine!";
+    }
+
+    // Example: Simulate AQI changing every 3s (mock data)
+    let mockAQI = 42;
+    setInterval(() => {
+      mockAQI = Math.floor(Math.random() * 400); // random AQI
+      updateAQI(mockAQI);
+    }, 3000);
+
     // AQI Chart (Mock Data)
     const ctx = document.getElementById('aqiChart');
     new Chart(ctx, {
