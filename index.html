@@ -143,13 +143,13 @@
       </p>
       <p>
   AQI Threshold: 
-  <span id="aqi-value-display" style="font-weight: 600; margin-left: 8px; color: #4CAF50;">100</span>
+  <span id="aqi-value-display" style="font-weight: 600; margin-left: 8px;">151</span>
   <br>
-  <input type="range" id="aqi-threshold" min="0" max="300" value="100" oninput="updateAQIValue(this.value)">
+  <input type="range" id="aqi-threshold" min="0" max="300" value="151" oninput="updateAQIValue(this.value)">
 </p>
 
 <style>
-  /* Gradient slider style */
+  /* Gradient slider background */
   #aqi-threshold {
     width: 100%;
     height: 10px;
@@ -157,57 +157,69 @@
     outline: none;
     -webkit-appearance: none;
     background: linear-gradient(to right, 
-      #4CAF50 0%,    /* Green (0–50) */
-      #4CAF50 16%, 
-      #FFEB3B 16%,   /* Yellow (51–100) */
-      #FFEB3B 33%, 
-      #FF9800 33%,   /* Orange (101–150) */
-      #FF9800 50%, 
-      #F44336 50%,   /* Red (151–200) */
-      #F44336 66%, 
-      #9C27B0 66%,   /* Purple (201–300) */
-      #9C27B0 100%
-    );
+      #4CAF50 0%, #4CAF50 16%, 
+      #FFEB3B 16%, #FFEB3B 33%, 
+      #FF9800 33%, #FF9800 50%, 
+      #F44336 50%, #F44336 66%, 
+      #9C27B0 66%, #9C27B0 100%);
   }
 
-  /* Slider thumb */
+  /* Slider thumb (default white, will be overridden via JS) */
   #aqi-threshold::-webkit-slider-thumb {
     -webkit-appearance: none;
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: #fff;
+    background: #F44336; /* Default red for AQI 151 */
     border: 2px solid #888;
     cursor: pointer;
     margin-top: -6px;
+    transition: background 0.2s ease;
   }
   #aqi-threshold::-moz-range-thumb {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: #fff;
+    background: #F44336;
     border: 2px solid #888;
     cursor: pointer;
+    transition: background 0.2s ease;
   }
 </style>
 
 <script>
   function updateAQIValue(value) {
     const display = document.getElementById('aqi-value-display');
+    const slider = document.getElementById('aqi-threshold');
     display.textContent = value;
 
-    // Change AQI number color based on range
-    if (value <= 50) display.style.color = "#4CAF50";       // Green
-    else if (value <= 100) display.style.color = "#FFEB3B"; // Yellow
-    else if (value <= 150) display.style.color = "#FF9800"; // Orange
-    else if (value <= 200) display.style.color = "#F44336"; // Red
-    else display.style.color = "#9C27B0";                   // Purple
+    let color;
+    if (value <= 50) color = "#4CAF50";      // Green
+    else if (value <= 100) color = "#FFEB3B"; // Yellow
+    else if (value <= 150) color = "#FF9800"; // Orange
+    else if (value <= 200) color = "#F44336"; // Red
+    else color = "#9C27B0";                  // Purple
+
+    // Update text color
+    display.style.color = color;
+
+    // Update slider thumb color dynamically
+    slider.style.setProperty('--thumb-color', color);
+    slider.style.setProperty('--webkit-slider-thumb', color);
+
+    // For WebKit browsers (Chrome/Safari)
+    slider.style.setProperty('--thumb-color', color);
+    slider.style.cssText += `
+      #aqi-threshold::-webkit-slider-thumb { background: ${color}; }
+    `;
   }
 
+  // ✅ Set default to 151 on page load
   window.onload = function() {
     updateAQIValue(151);
   };
 </script>
+
     </div>
   </div>
 
