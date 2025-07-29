@@ -95,7 +95,7 @@
   <!-- HEADER -->
   <header>
   <div class="logo">
-    <svg width="260" height="60" viewBox="0 0 300 60" xmlns="http://www.w3.org/2000/svg">
+    <svg width="260" height="60" viewBox="0 0 260 60" xmlns="http://www.w3.org/2000/svg">
       <!-- Green background -->
       <rect width="260" height="60" rx="12" fill="#4CAF50"/>
       
@@ -103,11 +103,16 @@
       <text x="20" y="38" font-family="Poppins, Arial, sans-serif" font-size="22" fill="white" font-weight="600">
         Breezi Air Purifier
       </text>
-
-      <!-- Breeze Waves (shifted to the far right) -->
-      <path d="M220 22 q12 -6 24 0" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-      <path d="M220 32 q12 -6 24 0" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-      <path d="M220 42 q12 -6 24 0" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      
+      <!-- Slightly Larger Plant Icon -->
+      <g transform="translate(220,31) scale(0.85)" stroke="white" stroke-width="2.5" fill="none">
+        <!-- Stem -->
+        <line x1="0" y1="4" x2="0" y2="14" stroke="white"/>
+        <!-- Left Leaf -->
+        <path d="M0 4 C-8 -4 -12 -8 -8 -14 C-4 -10 0 -8 0 0 Z"/>
+        <!-- Right Leaf -->
+        <path d="M0 4 C8 -4 12 -8 8 -14 C4 -10 0 -8 0 0 Z"/>
+    </g>
     </svg>
   </div>
 
