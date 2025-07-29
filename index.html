@@ -24,14 +24,21 @@
       box-shadow: 0 2px 5px rgba(0,0,0,0.08);
     }
     header img.logo { height: 40px; }
-    .lang-user { display: flex; align-items: center; gap: 15px; }
-    .lang-user button {
+    .lang-user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      }
+
+    .lang-user .lang-btn {
       background: transparent;
-      border: 1px solid #ddd;
-      padding: 6px 12px;
-      border-radius: 6px;
+      border: 1.5px solid #ddd;
+      padding: 10px 20px;   /* Bigger padding to match logo height */
+      border-radius: 8px;
       cursor: pointer;
       font-weight: 500;
+      font-size: 16px;      /* Larger text size */
+      height: 44px;         /* Makes button height visually match logo */
     }
     .container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px; }
     .card {
@@ -98,9 +105,9 @@
       </text>
 
       <!-- Breeze Waves (shifted to the far right) -->
-      <path d="M240 22 q12 -6 24 0" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-      <path d="M240 32 q12 -6 24 0" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-      <path d="M240 42 q12 -6 24 0" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M220 22 q12 -6 24 0" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M220 32 q12 -6 24 0" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M220 42 q12 -6 24 0" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
     </svg>
   </div>
 
