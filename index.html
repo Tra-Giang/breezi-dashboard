@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Breezi – Air Purifier Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f6f8fc;
+      margin: 0;
+      padding: 0;
+      color: #222;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #ffffff;
+      padding: 10px 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    header img.logo { height: 40px; }
+    .lang-user { display: flex; align-items: center; gap: 15px; }
+    .container { padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+    }
+    h2 { margin-top: 0; font-size: 20px; }
+    .device-status span.online { color: green; }
+    .device-status span.offline { color: red; }
+    .controls button {
+      margin: 5px;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .controls button.active { background: #4caf50; color: #fff; }
+    .controls button.inactive { background: #ccc; color: #333; }
+    .aqi-value {
+      font-size: 48px;
+      font-weight: bold;
+      text-align: center;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    .env-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #f0f0f0;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .chart-placeholder {
+      height: 150px;
+      background: #eef2f7;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <img src="logo.png" alt="Breezi Logo" class="logo" />
+    <div class="lang-user">
+      <button>EN</button>
+      <button>VI</button>
+      <img src="avatar.png" alt="User Avatar" style="height: 35px; border-radius: 50%;" />
+    </div>
+  </header>
+
+  <!-- Device Overview & Controls -->
+  <div class="container">
+    <div class="card">
+      <h2>Device Overview</h2>
+      <p><strong>Device:</strong> Breezi Mini Air Purifier</p>
+      <p><strong>Location:</strong> Living Room</p>
+      <p class="device-status"><strong>Status:</strong> <span class="online">Online</span></p>
+      <p><strong>Battery:</strong> 🔋 85%</p>
+    </div>
+    <div class="card controls">
+      <h2>Control Panel</h2>
+      <p>Filter Fan: 
+        <button class="active">Auto</button>
+        <button class="inactive">On</button>
+        <button class="inactive">Off</button>
+      </p>
+      <p>Sterilization Mist:
+        <button class="active">Auto</button>
+        <button class="inactive">On</button>
+        <button class="inactive">Off</button>
+      </p>
+      <p>AQI Threshold: <input type="range" min="0" max="200" value="100"></p>
+      <p>Timer: <input type="time"></p>
+    </div>
+  </div>
+
+  <!-- Real-time Air Quality -->
+  <div class="card" style="margin: 20px;">
+    <h2>Real-time Air Quality</h2>
+    <div class="aqi-value" style="background: #4caf50;">AQI: 42 (Good)</div>
+    <p>PM2.5: 12 μg/m³ | PM10: 20 μg/m³ | CO: 0.5 ppm | NO2: 10 ppb | SO2: 5 ppb | CO2: 450 ppm | VOCs: Low</p>
+    <p style="color: orange;">⚠️ AQI moderate, consider ventilation!</p>
+  </div>
+
+  <!-- Environmental Data & Analytics -->
+  <div class="container">
+    <div class="card">
+      <h2>Environmental Data</h2>
+      <div class="env-grid">
+        <p>🌡 Temp: 26°C</p>
+        <p>💧 Humidity: 60%</p>
+        <p>🌬 Pressure: 1012 hPa</p>
+        <p>⛅ Weather: Sunny</p>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Analytics & History</h2>
+      <p>AQI Chart:</p>
+      <div class="chart-placeholder">[AQI Chart Here]</div>
+      <p>PM2.5, CO2 Charts:</p>
+      <div class="chart-placeholder">[PM2.5 Chart Here]</div>
+      <p>User History: Log of actions</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    📞 Support | 📄 User Manual | © 2025 Breezi
+  </footer>
+
+</body>
+</html>
