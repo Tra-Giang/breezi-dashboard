@@ -149,28 +149,23 @@
 </p>
 
 <style>
-  /* Gradient slider background */
   #aqi-threshold {
     width: 100%;
     height: 10px;
     border-radius: 8px;
     outline: none;
     -webkit-appearance: none;
-    background: linear-gradient(to right, 
-      #4CAF50 0%, #4CAF50 16%, 
-      #FFEB3B 16%, #FFEB3B 33%, 
-      #FF9800 33%, #FF9800 50%, 
-      #F44336 50%, #F44336 66%, 
-      #9C27B0 66%, #9C27B0 100%);
+    background: linear-gradient(to right, #F44336 0%, #F44336 50%, #ddd 50%, #ddd 100%);
+    transition: background 0.2s ease;
   }
 
-  /* Slider thumb (default white, will be overridden via JS) */
+  /* Slider thumb */
   #aqi-threshold::-webkit-slider-thumb {
     -webkit-appearance: none;
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: #F44336; /* Default red for AQI 151 */
+    background: #F44336;
     border: 2px solid #888;
     cursor: pointer;
     margin-top: -6px;
@@ -193,6 +188,7 @@
     const slider = document.getElementById('aqi-threshold');
     display.textContent = value;
 
+    // Determine AQI color
     let color;
     if (value <= 50) color = "#4CAF50";      // Green
     else if (value <= 100) color = "#FFEB3B"; // Yellow
@@ -203,18 +199,20 @@
     // Update text color
     display.style.color = color;
 
-    // Update slider thumb color dynamically
-    slider.style.setProperty('--thumb-color', color);
-    slider.style.setProperty('--webkit-slider-thumb', color);
+    // Calculate percentage position of thumb
+    const percent = (value / slider.max) * 100;
 
-    // For WebKit browsers (Chrome/Safari)
+    // Update slider track gradient: color to thumb, gray after thumb
+    slider.style.background = `linear-gradient(to right, ${color} 0%, ${color} ${percent}%, #ddd ${percent}%, #ddd 100%)`;
+
+    // Update slider thumb color
     slider.style.setProperty('--thumb-color', color);
     slider.style.cssText += `
       #aqi-threshold::-webkit-slider-thumb { background: ${color}; }
     `;
   }
 
-  // ✅ Set default to 151 on page load
+  // ✅ Set default to AQI 151 (red) on page load
   window.onload = function() {
     updateAQIValue(151);
   };
