@@ -143,8 +143,9 @@
       </p>
       <p>
   AQI Threshold: 
+  <span id="aqi-value-display" style="font-weight: 600; margin-left: 8px; color: #4CAF50;">100</span>
+  <br>
   <input type="range" id="aqi-threshold" min="0" max="300" value="100" oninput="updateAQIValue(this.value)">
-  <span id="aqi-value-display">100</span>
 </p>
 
 <style>
@@ -169,7 +170,7 @@
     );
   }
 
-  /* Remove default thumb style */
+  /* Slider thumb */
   #aqi-threshold::-webkit-slider-thumb {
     -webkit-appearance: none;
     height: 20px;
@@ -191,9 +192,16 @@
 </style>
 
 <script>
-  // Update AQI Threshold display dynamically
   function updateAQIValue(value) {
-    document.getElementById('aqi-value-display').textContent = value;
+    const display = document.getElementById('aqi-value-display');
+    display.textContent = value;
+
+    // Change AQI number color based on range
+    if (value <= 50) display.style.color = "#4CAF50";       // Green
+    else if (value <= 100) display.style.color = "#FFEB3B"; // Yellow
+    else if (value <= 150) display.style.color = "#FF9800"; // Orange
+    else if (value <= 200) display.style.color = "#F44336"; // Red
+    else display.style.color = "#9C27B0";                   // Purple
   }
 </script>
       <p>Timer: <input type = "time"></p>
