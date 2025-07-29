@@ -159,26 +159,27 @@
     transition: background 0.2s ease;
   }
 
-  /* Slider thumb */
+  /* Slider thumb - always white */
   #aqi-threshold::-webkit-slider-thumb {
     -webkit-appearance: none;
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: #F44336;
+    background: #fff; /* Always white */
     border: 2px solid #888;
     cursor: pointer;
     margin-top: -6px;
-    transition: background 0.2s ease;
+    transition: border 0.2s ease;
   }
+
   #aqi-threshold::-moz-range-thumb {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: #F44336;
+    background: #fff; /* Always white */
     border: 2px solid #888;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: border 0.2s ease;
   }
 </style>
 
@@ -196,20 +197,14 @@
     else if (value <= 200) color = "#F44336"; // Red
     else color = "#9C27B0";                  // Purple
 
-    // Update text color
+    // Update AQI number color
     display.style.color = color;
 
     // Calculate percentage position of thumb
     const percent = (value / slider.max) * 100;
 
-    // Update slider track gradient: color to thumb, gray after thumb
+    // Update slider track fill: color up to thumb, gray after
     slider.style.background = `linear-gradient(to right, ${color} 0%, ${color} ${percent}%, #ddd ${percent}%, #ddd 100%)`;
-
-    // Update slider thumb color
-    slider.style.setProperty('--thumb-color', color);
-    slider.style.cssText += `
-      #aqi-threshold::-webkit-slider-thumb { background: ${color}; }
-    `;
   }
 
   // ✅ Set default to AQI 151 (red) on page load
@@ -217,7 +212,6 @@
     updateAQIValue(151);
   };
 </script>
-
     </div>
   </div>
 
