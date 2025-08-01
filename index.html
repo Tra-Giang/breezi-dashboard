@@ -33,6 +33,19 @@
     .sensor-card .bar div{height:100%;animation:fillBar 1s ease-out;background:#4CAF50;}
     @keyframes fillBar{from{width:0;}}
     .controls .control-row{display:flex;justify-content:space-between;align-items:center;margin:14px 0;color:#2e7d32;}
+    .logo h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 26px; /* tăng size */
+  font-weight: 700;
+  color: #2e7d32;
+  margin: 0;
+}
+
+.plant-icon {
+  font-size: 28px; /* icon lớn vừa phải */
+}
     .mode-buttons{display:flex;gap:6px;}
     .mode-btn{padding:6px 14px;border:1px solid rgba(255,255,255,0.4);border-radius:20px;font-size:13px;cursor:pointer;transition:all 0.3s ease;background:rgba(255,255,255,0.15);color:#2e7d32;}
     .mode-btn:hover{background:rgba(255,255,255,0.25);}
@@ -56,8 +69,13 @@
 </head>
 <body>
 <header>
-  <div class="logo"><h2>Breezi Air Purifier</h2></div>
-  <div class="lang-user"><button class="lang-btn">EN</button><button class="lang-btn">VI</button></div>
+  <div class="logo">
+    <h2><span class="plant-icon">🌱</span> Breezi Air Purifier</h2>
+  </div>
+  <div class="lang-user">
+    <button class="lang-btn">EN</button>
+    <button class="lang-btn">VI</button>
+  </div>
 </header>
 
 <div class="container">
