@@ -18,14 +18,10 @@
     .aqi-value{font-size:48px;font-weight:600;text-align:center;padding:16px;border-radius:14px;margin-bottom:12px;color:#fff;background:#F44336;}
     #main-pollutant {font-weight:700;font-size:18px;text-align:center;margin:8px 0;color:#d32f2f;}
     #aqi-warning {text-align:center;font-size:15px;color:#333;}
-
-    /* ENV MINI INSIDE AQI */
     .env-mini-grid {display:grid;grid-template-columns:repeat(4,1fr);gap:10px;text-align:center;margin-top:15px;}
     .env-tile{background:#eef3fa;border-radius:10px;padding:8px 6px;font-size:14px;}
     .env-tile span{display:block;font-weight:600;font-size:15px;margin-top:2px;}
     .env-tile small{font-size:11px;color:#777;}
-
-    /* SENSOR CARDS */
     .sensor-grid {display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:14px;}
     .sensor-card {background:#f9fbff;border-radius:12px;padding:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
     .sensor-card .icon{font-size:22px;margin-bottom:4px;}
@@ -36,8 +32,6 @@
     .sensor-card[data-level="good"] .bar div{background:#4CAF50;}
     .sensor-card[data-level="moderate"] .bar div{background:#FFC107;}
     .sensor-card[data-level="bad"] .bar div{background:#F44336;}
-
-    /* CONTROL PANEL */
     .controls .control-row{display:flex;justify-content:space-between;align-items:center;margin:14px 0;}
     .mode-buttons{display:flex;gap:6px;}
     .mode-btn{padding:6px 14px;border:1px solid #ccc;border-radius:20px;font-size:13px;cursor:pointer;}
@@ -47,16 +41,10 @@
     .fan-icon{display:inline-block;margin-left:8px;font-size:18px;}
     .spin{animation:spin 1s linear infinite;}
     @keyframes spin{100%{transform:rotate(360deg);}}
-
-    /* AQI THRESHOLD */
     .threshold-row{margin:16px 0;display:flex;justify-content:space-between;align-items:center;}
     .threshold-input{width:70px;padding:6px;border:1px solid #ccc;border-radius:8px;text-align:center;}
-
-    /* ANALYTICS */
     .tabs{text-align:center;margin-bottom:8px;}
     .tabs button{margin:5px;padding:6px 14px;border:1px solid #ccc;border-radius:8px;background:#f5f8fb;cursor:pointer;}
-    #metric-controls{text-align:center;margin-bottom:10px;}
-    #metric-controls label{margin:0 8px;font-size:13px;cursor:pointer;}
     #activity-log{width:100%;border-collapse:collapse;margin-top:12px;font-size:13px;}
     #activity-log th,#activity-log td{border:1px solid #ddd;padding:6px;text-align:center;}
     #activity-log th{background:#f0f4f8;font-weight:600;}
@@ -129,15 +117,6 @@
   <div class="card">
     <h2>Analytics & History</h2>
     <div class="tabs"><button>Hour</button><button>Day</button><button>Week</button></div>
-    <div id="metric-controls">
-      <label><input type="checkbox" value="AQI" checked> AQI</label>
-      <label><input type="checkbox" value="PM2.5" checked> PM2.5</label>
-      <label><input type="checkbox" value="PM10" checked> PM10</label>
-      <label><input type="checkbox" value="CO"> CO</label>
-      <label><input type="checkbox" value="NO₂"> NO₂</label>
-      <label><input type="checkbox" value="SO₂"> SO₂</label>
-      <label><input type="checkbox" value="CO₂"> CO₂</label>
-    </div>
     <canvas id="multiChart"></canvas>
     <h3 style="text-align:center;margin-top:18px;">Device Activity Log</h3>
     <table id="activity-log">
@@ -153,46 +132,28 @@
   let fanMode = "Auto", mistMode = "Auto";
 
   function logActivity(aqi, status) {
-    if (fanMode !== "Off" || mistMode !== "Off") {
-      const tbody = document.getElementById('activity-body');
-      const now = new Date().toLocaleTimeString();
-      let recommend =
-        aqi > 200 ? "Stay indoors & max filter" :
-        aqi > 150 ? "Keep filtration high" :
-        aqi > 100 ? "Ventilate carefully" :
-        "Normal Auto mode";
-
-      const row = document.createElement('tr');
-      row.innerHTML = `<td>${now}</td>
-                       <td>${fanMode}</td>
-                       <td>${mistMode}</td>
-                       <td>${status}</td>
-                       <td>${recommend}</td>`;
-      tbody.prepend(row);
-    }
+    const tbody = document.getElementById('activity-body');
+    const now = new Date().toLocaleTimeString();
+    let recommend = aqi > 200 ? "Stay indoors & max filter" :
+                    aqi > 150 ? "Keep filtration high" :
+                    aqi > 100 ? "Ventilate carefully" : "Normal Auto mode";
+    const row = document.createElement('tr');
+    row.innerHTML = `<td>${now}</td><td>${fanMode}</td><td>${mistMode}</td><td>${status}</td><td>${recommend}</td>`;
+    tbody.prepend(row);
   }
 
   document.querySelectorAll('.mode-buttons').forEach(group => {
-    const buttons = group.querySelectorAll('.mode-btn');
-    buttons.forEach(btn => {
+    group.querySelectorAll('.mode-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        buttons.forEach(b => b.classList.remove('active'));
+        group.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-
         if (group.dataset.control === 'fan') {
-          fanMode = btn.dataset.mode === "auto" ? "Auto" :
-                    btn.dataset.mode === "on" ? "On" : "Off";
-          const fan = document.getElementById('fan-icon');
-          (btn.dataset.mode === 'on' || btn.dataset.mode === 'auto') ?
-            fan.classList.add('spin') : fan.classList.remove('spin');
+          fanMode = btn.dataset.mode.charAt(0).toUpperCase() + btn.dataset.mode.slice(1);
+          document.getElementById('fan-icon').classList.toggle('spin', btn.dataset.mode !== 'off');
         } else {
-          mistMode = btn.dataset.mode === "auto" ? "Auto" :
-                     btn.dataset.mode === "on" ? "On" : "Off";
+          mistMode = btn.dataset.mode.charAt(0).toUpperCase() + btn.dataset.mode.slice(1);
         }
-
-        if (fanMode !== "Off" || mistMode !== "Off") {
-          logActivity(165, "Mode Change");
-        }
+        logActivity(165, "Mode Change");
       });
     });
   });
@@ -202,62 +163,34 @@
   // ================= BIỂU ĐỒ CHART.JS ==================
   const ctx = document.getElementById('multiChart').getContext('2d');
   const labels = Array.from({ length: 12 }, (_, i) => `${i + 1}h`);
+  const colors = ['#F44336','#2196F3','#FFC107','#8BC34A','#9C27B0','#FF5722','#00BCD4','#795548','#607D8B','#E91E63'];
+  const datasets = ['AQI','PM2.5','PM10','CO','NO₂','SO₂','CO₂','VOCs','Temperature','Humidity']
+    .map((label,i)=>({
+      label,
+      data: Array.from({length:12},()=>Math.floor(20+Math.random()*100)),
+      borderColor: colors[i%colors.length],
+      backgroundColor: colors[i%colors.length]+'33',
+      tension:0.4,
+      fill:true
+    }));
+
   const multiChart = new Chart(ctx, {
     type: 'line',
-    data: {
-      labels: labels,
-      datasets: [
-        {
-          label: 'AQI',
-          data: [120, 135, 150, 165, 180, 170, 160, 140, 130, 125, 115, 110],
-          borderColor: '#F44336',
-          backgroundColor: 'rgba(244,67,54,0.1)',
-          tension: 0.4,
-          fill: true
-        },
-        {
-          label: 'PM2.5',
-          data: [35, 40, 45, 55, 60, 58, 52, 48, 44, 42, 40, 38],
-          borderColor: '#2196F3',
-          backgroundColor: 'rgba(33,150,243,0.1)',
-          tension: 0.4,
-          fill: true
-        },
-        {
-          label: 'PM10',
-          data: [60, 65, 70, 80, 85, 82, 78, 72, 68, 66, 63, 60],
-          borderColor: '#FFC107',
-          backgroundColor: 'rgba(255,193,7,0.1)',
-          tension: 0.4,
-          fill: true
-        }
-      ]
-    },
+    data: { labels, datasets },
     options: {
       responsive: true,
       plugins: { legend: { position: 'top' } },
-      scales: {
-        x: { title: { display: true, text: 'Time' } },
-        y: { title: { display: true, text: 'Value' }, beginAtZero: true }
-      }
+      scales: { x: { title:{display:true,text:'Time'} }, y: { title:{display:true,text:'Value'}, beginAtZero:true } }
     }
   });
 
   setInterval(() => {
-    const newAQI = Math.floor(100 + Math.random() * 100);
-    const newPM25 = Math.floor(30 + Math.random() * 30);
-    const newPM10 = Math.floor(50 + Math.random() * 40);
-
-    multiChart.data.datasets[0].data.push(newAQI);
-    multiChart.data.datasets[1].data.push(newPM25);
-    multiChart.data.datasets[2].data.push(newPM10);
     multiChart.data.labels.push(new Date().toLocaleTimeString());
-
-    if (multiChart.data.labels.length > 12) {
-      multiChart.data.labels.shift();
-      multiChart.data.datasets.forEach(d => d.data.shift());
-    }
-
+    if (multiChart.data.labels.length>12) multiChart.data.labels.shift();
+    multiChart.data.datasets.forEach(ds=>{
+      ds.data.push(Math.floor(20+Math.random()*100));
+      if (ds.data.length>12) ds.data.shift();
+    });
     multiChart.update();
   }, 5000);
 </script>
