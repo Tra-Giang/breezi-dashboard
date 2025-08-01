@@ -163,7 +163,7 @@
   document.querySelectorAll('#metric-controls input').forEach(chk=>chk.addEventListener('change',()=>{const ds=multiChart.data.datasets.find(d=>d.label===chk.value);ds.hidden=!chk.checked;multiChart.update();}));
   const tbody=document.getElementById('history-body');
   for(let i=0;i<labels.length;i++){const r=document.createElement('tr');r.innerHTML=`<td>${labels[i]}</td><td>${metrics.AQI[i]}</td><td>${metrics["PM2.5"][i]}</td><td>${metrics.PM10[i]}</td><td>${metrics.CO[i]}</td><td>${metrics["NO₂"][i]}</td><td>${metrics["SO₂"][i]}</td><td>${metrics["CO₂"][i]}</td><td>${metrics.VOCs[i]}</td><td>${metrics.Temp[i]}°C</td><td>${metrics.Humidity[i]}%</td><td>${metrics.Pressure[i]} hPa</td>`;tbody.appendChild(r);}
-  setInterval(()=>updateAQI(Math.floor(Math.random()*400)),5000);
+  setInterval(()=>updateAQI(Math.floor(Math.random()*1000)),5000);
 </script>
 </body>
 </html>
