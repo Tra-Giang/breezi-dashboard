@@ -1,136 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8"> 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Breezi • Air Purifier Dashboard</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     /* ==== GLOBAL ==== */
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Poppins', sans-serif;
       margin: 0;
-      background: linear-gradient(135deg, #eef3f8, #dcecfb);
+      background: linear-gradient(135deg, #f0f4f8, #e8f1fb);
       color: #1e2a38;
       line-height: 1.6;
     }
     header {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 16px 28px; 
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(12px);
-      box-shadow: 0 2px 12px rgba(0,0,0,0.05); 
-      position: sticky; top: 0; z-index: 100;
-      border-bottom: 1px solid rgba(255,255,255,0.4);
+      padding: 16px 28px; background: #ffffffd9; backdrop-filter: blur(10px);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100;
     }
 
     /* ==== LANGUAGE BUTTONS ==== */
     .lang-user { display: flex; gap: 12px;}
     .lang-btn {
-      background: transparent; border: 1.2px solid #ccc;
+      background: transparent; border: 1.5px solid #ccc;
       padding: 8px 16px; border-radius: 10px; cursor: pointer;
-      font-weight: 500; font-size: 14px; transition: 0.2s;
+      font-weight: 500; font-size: 15px; transition: 0.2s;
     }
-    .lang-btn:hover { background: rgba(230,240,255,0.7); border-color: #99b8e4;}
+    .lang-btn:hover { background: #e8f1fb; border-color: #99b8e4;}
 
     /* ==== GRID LAYOUT ==== */
-    .container { 
-      display: grid; grid-template-columns: 1fr 1fr; 
-      gap: 28px; padding: 30px; 
-    }
+    .container { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; padding: 20px; }
     .card {
-      background: rgba(255, 255, 255, 0.65);
-      backdrop-filter: blur(14px);
-      border-radius: 20px;
-      padding: 24px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-      border: 1px solid rgba(255,255,255,0.5);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      border: 1px solid rgba(255,255,255,0.6);
+      transition: transform 0.2s ease;
     }
-    .card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.07); }
+    .card:hover { transform: translateY(-2px); }
 
     /* ==== TITLES ==== */
-    h2 { margin-top: 0; font-size: 20px; font-weight: 600; text-align: center; margin-bottom: 18px; }
+    h2 { margin-top: 0; font-size: 20px; font-weight: 600; text-align: center; margin-bottom: 15px; }
 
     /* ==== AQI BOX ==== */
     .aqi-value {
-      font-size: 56px; font-weight: 700;
-      text-align: center; padding: 20px;
-      border-radius: 16px; margin-bottom: 14px; color: #fff;
-      transition: background 0.4s ease, transform 0.25s ease;
+      font-size: 48px; font-weight: 600;
+      text-align: center; padding: 16px;
+      border-radius: 14px; margin-bottom: 12px; color: #fff;
+      transition: background 0.4s ease, transform 0.2s ease;
     }
-    .aqi-value:hover { transform: scale(1.03); }
-    .main-pollutant { text-align: center; font-size: 16px; font-weight: 500; margin: 6px 0;}
-    #aqi-warning { text-align: center; font-weight: 500; margin-top: 8px; font-size: 14px;}
+    .aqi-value:hover { transform: scale(1.02); }
+    .main-pollutant { text-align: center; font-size: 18px; font-weight: 500; margin: 6px 0;}
+    #aqi-warning { text-align: center; font-weight: 500; margin-top: 8px; font-size: 15px;}
 
     /* ==== SENSOR BUTTONS ==== */
     .sensor-buttons {
-      display: grid; grid-template-columns: repeat(auto-fit,minmax(120px,1fr));
-      gap: 10px; margin-bottom: 15px;
+      display: flex; flex-wrap: wrap; gap: 10px;
+      justify-content: center; margin-bottom: 15px;
     }
     .sensor-buttons button {
-      background: rgba(240,247,255,0.8); border: none;
-      padding: 10px; border-radius: 14px;
-      cursor: pointer; font-weight: 500; font-size: 13px;
+      background: #edf4ff; border: none;
+      padding: 10px 16px; border-radius: 12px;
+      cursor: pointer; font-weight: 500; font-size: 14px;
       transition: all 0.2s ease;
     }
-    .sensor-buttons button:hover { background: rgba(220,235,255,0.9); transform: translateY(-1px); }
+    .sensor-buttons button:hover { background: #d7e9ff; transform: translateY(-1px); }
 
     /* ==== ENVIRONMENT GRID ==== */
     .env-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-      font-weight: 500; text-align: center; font-size: 14px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+      font-weight: 500; text-align: center;
     }
 
     /* ==== CONTROL PANEL ==== */
-    .controls .control-row { display: flex; justify-content: space-between; align-items: center; margin: 10px 0;}
-    .switch {
-      position: relative; width: 46px; height: 24px;
+    .controls .control-row {
+      display: flex; justify-content: space-between; align-items: center; 
+      margin: 14px 0;
     }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    .slider {
-      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #ccc; transition: 0.3s; border-radius: 24px;
+    .mode-buttons { display: flex; gap: 6px; }
+    .mode-btn {
+      padding: 6px 14px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.7);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s ease;
     }
-    .slider:before {
-      position: absolute; content: "";
-      height: 18px; width: 18px; left: 3px; bottom: 3px;
-      background-color: white; transition: 0.3s; border-radius: 50%;
+    .mode-btn.active[data-mode="auto"] {
+      background: #4CAF50; color: #fff; border-color: #4CAF50; box-shadow: 0 2px 6px rgba(76,175,80,0.3);
     }
-    input:checked + .slider { background-color: #4CAF50; }
-    input:checked + .slider:before { transform: translateX(22px); }
+    .mode-btn.active[data-mode="on"] {
+      background: #2196F3; color: #fff; border-color: #2196F3; box-shadow: 0 2px 6px rgba(33,150,243,0.3);
+    }
+    .mode-btn.active[data-mode="off"] {
+      background: #b0b0b0; color: #fff; border-color: #b0b0b0; box-shadow: 0 2px 6px rgba(120,120,120,0.3);
+    }
+    .mode-btn:hover:not(.active) { background: rgba(230,245,255,0.8); }
+
+    /* Fan icon animation */
+    .fan-icon {
+      display:inline-block;
+      margin-left:8px;
+      font-size:18px;
+      transition: transform 0.2s linear;
+    }
+    .spin { animation: spin 1s linear infinite; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
 
     /* ==== TABS ==== */
     .tabs { text-align: center; margin-bottom: 8px;}
     .tabs button {
-      margin: 4px; padding: 6px 14px;
-      border: 1px solid #ddd; border-radius: 8px;
-      cursor: pointer; background: rgba(255,255,255,0.7); 
-      font-weight: 500; font-size: 13px; transition: 0.2s;
+      margin: 5px; padding: 6px 14px;
+      border: 1px solid #ccc; border-radius: 8px;
+      cursor: pointer; background: #f5f8fb; font-weight: 500; font-size: 14px;
+      transition: 0.2s;
     }
-    .tabs button:hover { background: rgba(220,230,245,0.8); }
+    .tabs button:hover { background: #e4ecf7; }
 
     /* ==== AQI SLIDER ==== */
     #aqi-threshold {
       width: 100%; height: 10px; border-radius: 8px;
       outline: none; -webkit-appearance: none;
-      background: linear-gradient(to right, #4CAF50 0%, #ddd 0%);
+      background: linear-gradient(to right, #F44336 0%, #F44336 50%, #ddd 50%, #ddd 100%);
     }
-    #aqi-threshold::-webkit-slider-thumb {
-      height: 18px; width: 18px; border-radius: 50%;
-      background: #fff; border: 2px solid #999; cursor: pointer; transition: transform 0.2s;
+    #aqi-threshold::-webkit-slider-thumb, 
+    #aqi-threshold::-moz-range-thumb {
+      height: 20px; width: 20px; border-radius: 50%;
+      background: #fff; border: 2px solid #888; cursor: pointer; transition: transform 0.15s;
     }
     #aqi-threshold::-webkit-slider-thumb:hover { transform: scale(1.1); }
 
     /* ==== CHART ==== */
-    #aqiChart { height: 100% !important; max-height: 240px; }
+    #aqiChart { height: 100% !important; max-height: 260px; }
 
     /* ==== FOOTER ==== */
     footer {
-      text-align: center; padding: 18px; background: rgba(255,255,255,0.7);
-      font-size: 13px; color: #666; margin-top: 20px; backdrop-filter: blur(6px);
+      text-align: center; padding: 18px; background: #eef2f6;
+      font-size: 14px; color: #555; margin-top: 20px;
     }
 
     /* RESPONSIVE */
@@ -141,14 +153,18 @@
     }
   </style>
 </head>
-
 <body>
   <!-- HEADER -->
   <header>
     <div class="logo">
-      <svg width="200" height="50" viewBox="0 0 260 60" xmlns="http://www.w3.org/2000/svg">
-        <rect width="260" height="60" rx="14" fill="#4CAF50"/>
-        <text x="20" y="38" font-family="Inter, Arial, sans-serif" font-size="22" fill="white" font-weight="600">Breezi</text>
+      <svg width="260" height="60" viewBox="0 0 260 60" xmlns="http://www.w3.org/2000/svg">
+        <rect width="260" height="60" rx="12" fill="#4CAF50"/>
+        <text x="20" y="38" font-family="Poppins, Arial, sans-serif" font-size="22" fill="white" font-weight="600">Breezi Air Purifier</text>
+        <g transform="translate(230,31) scale(0.85)" stroke="white" stroke-width="2.5" fill="none">
+          <line x1="0" y1="4" x2="0" y2="14"/>
+          <path d="M0 4 C-8 -4 -12 -8 -8 -14 C-4 -10 0 -8 0 0 Z"/>
+          <path d="M0 4 C8 -4 12 -8 8 -14 C4 -10 0 -8 0 0 Z"/>
+        </g>
       </svg>
     </div>
     <div class="lang-user">
@@ -157,13 +173,13 @@
     </div>
   </header>
 
-  <!-- AQI & SENSOR -->
+  <!-- AQI & SENSOR DATA -->
   <div class="container">
     <div class="card">
       <h2>Air Quality Index</h2>
-      <div id="aqi-box" class="aqi-value">42</div>
+      <div id="aqi-box" class="aqi-value">AQI: 42 (Good)</div>
       <div id="main-pollutant" class="main-pollutant">Main Pollutant: PM2.5</div>
-      <p id="aqi-warning" style="color: #4CAF50;">✅ Air quality is good!</p>
+      <p id="aqi-warning" style="color: green;">✅ Air quality is fine!</p>
     </div>
     <div class="card">
       <h2>Sensor & Environment</h2>
@@ -177,32 +193,41 @@
         <button>VOCs: Low</button>
       </div>
       <div class="env-grid">
-        <p>Temp: 26°C</p>
-        <p>Humidity: 60%</p>
-        <p>Pressure: 1012 hPa</p>
-        <p>Weather: Sunny</p>
+        <p>🌡 Temp: 26°C</p>
+        <p>💧 Humidity: 60%</p>
+        <p>🌬 Pressure: 1012 hPa</p>
+        <p>⛅ Weather: Sunny</p>
       </div>
     </div>
   </div>
 
-  <!-- CONTROL & ANALYTICS -->
+  <!-- CONTROL PANEL & ANALYTICS -->
   <div class="container">
     <div class="card controls">
       <h2>Control Panel</h2>
       <div class="control-row">
-        <span>Filter Fan</span>
-        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <span>Filter Fan <span id="fan-icon" class="fan-icon">🌀</span></span>
+        <div class="mode-buttons" data-control="fan">
+          <button class="mode-btn active" data-mode="auto">Auto</button>
+          <button class="mode-btn" data-mode="on">On</button>
+          <button class="mode-btn" data-mode="off">Off</button>
+        </div>
       </div>
       <div class="control-row">
         <span>Sterilization Mist</span>
-        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+        <div class="mode-buttons" data-control="mist">
+          <button class="mode-btn active" data-mode="auto">Auto</button>
+          <button class="mode-btn" data-mode="on">On</button>
+          <button class="mode-btn" data-mode="off">Off</button>
+        </div>
       </div>
-      <p style="margin-top:15px;">
+      <p style="margin-top:18px;">
         AQI Threshold: 
         <span id="aqi-value-display" style="font-weight:600; margin-left:6px;">151</span>
         <input type="range" id="aqi-threshold" min="0" max="300" value="151" oninput="updateAQIValue(this.value)">
       </p>
     </div>
+
     <div class="card">
       <h2>Analytics & History</h2>
       <div class="tabs"><button>Hour</button><button>Day</button><button>Week</button></div>
@@ -210,56 +235,66 @@
     </div>
   </div>
 
-  <!-- FOOTER -->
   <footer>© 2025 Breezi • Air Purifier Dashboard</footer>
 
   <script>
-    function updateAQIValue(value) {
-      const display = document.getElementById('aqi-value-display');
-      const slider = document.getElementById('aqi-threshold');
-      display.textContent = value;
-      let color;
-      if (value <= 50) color = "#4CAF50";
-      else if (value <= 100) color = "#FFEB3B";
-      else if (value <= 150) color = "#FF9800";
-      else if (value <= 200) color = "#F44336";
-      else color = "#9C27B0";
-      display.style.color = color;
-      slider.style.background = `linear-gradient(to right, ${color} ${(value/3)}%, #ddd ${(value/3)}%)`;
-    }
-    window.onload = () => updateAQIValue(151);
-
+    // AQI COLOR & TEXT CLASSIFICATION
     function updateAQI(aqi) {
       const aqiBox = document.getElementById('aqi-box');
       const aqiWarning = document.getElementById('aqi-warning');
       const mainPollutant = document.getElementById('main-pollutant');
-      let color = '#4CAF50', text = "Good", pollutant = "PM2.5";
-      if (aqi > 300) { color = '#6A1B9A'; text = "Hazardous"; pollutant = "PM2.5"; }
-      else if (aqi > 200) { color = '#9C27B0'; text = "Very Unhealthy"; pollutant = "PM10"; }
-      else if (aqi > 150) { color = '#F44336'; text = "Unhealthy"; pollutant = "NO₂"; }
-      else if (aqi > 100) { color = '#FF9800'; text = "Unhealthy (Sensitive)"; pollutant = "CO₂"; }
-      else if (aqi > 50) { color = '#FFEB3B'; text = "Moderate"; pollutant = "PM2.5"; }
-      aqiBox.style.background = `linear-gradient(135deg, ${color}, ${color}cc)`;
-      aqiBox.textContent = `${aqi}`;
-      mainPollutant.textContent = `Main Pollutant: ${pollutant}`;
+      let color, text;
+      if (aqi <= 50) { color="#4CAF50"; text="Good"; }
+      else if (aqi <= 100) { color="#FFEB3B"; text="Moderate"; }
+      else if (aqi <= 150) { color="#FF9800"; text="Unhealthy (Sensitive)"; }
+      else if (aqi <= 200) { color="#F44336"; text="Unhealthy"; }
+      else if (aqi <= 300) { color="#9C27B0"; text="Very Unhealthy"; }
+      else { color="#7E0023"; text="Hazardous"; }
+      
+      aqiBox.style.background = color;
+      aqiBox.textContent = `AQI: ${aqi} (${text})`;
+      mainPollutant.textContent = `Main Pollutant: PM2.5`;
       aqiWarning.style.color = color;
-      aqiWarning.textContent = aqi > 100 ? "⚠️ Poor AQI! Use purifier!" : "✅ Air quality is good!";
+      aqiWarning.textContent = aqi > 100 ? "⚠️ Poor AQI! Consider filtration!" : "✅ Air quality is fine!";
     }
-    setInterval(() => updateAQI(Math.floor(Math.random() * 400)), 3000);
+    setInterval(()=> updateAQI(Math.floor(Math.random()*400)), 3000);
 
-    const ctx = document.getElementById('aqiChart');
-    new Chart(ctx, { 
-      type: 'line',
-      data: { 
-        labels: ['8am','9am','10am','11am','12pm'], 
-        datasets: [{ 
-          label: 'AQI', 
-          data: [42,55,60,70,50], 
-          borderColor: '#4caf50', 
-          fill:false, tension:0.4 
-        }] 
-      },
-      options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+    // AQI SLIDER
+    function updateAQIValue(value) {
+      const display=document.getElementById('aqi-value-display');
+      const slider=document.getElementById('aqi-threshold');
+      display.textContent=value;
+      const colors=["#4CAF50","#FFEB3B","#FF9800","#F44336","#9C27B0","#7E0023"];
+      let color=colors[Math.min(Math.floor(value/60),5)];
+      display.style.color=color;
+      const percent=(value/slider.max)*100;
+      slider.style.background=`linear-gradient(to right, ${color} 0%, ${color} ${percent}%, #ddd ${percent}%, #ddd 100%)`;
+    }
+    window.onload=()=>updateAQIValue(151);
+
+    // MODE BUTTONS & FAN SPIN
+    document.querySelectorAll('.mode-buttons').forEach(group=>{
+      const buttons=group.querySelectorAll('.mode-btn');
+      buttons.forEach(btn=>{
+        btn.addEventListener('click',()=>{
+          buttons.forEach(b=>b.classList.remove('active'));
+          btn.classList.add('active');
+          if(group.dataset.control==='fan'){
+            const fanIcon=document.getElementById('fan-icon');
+            if(btn.dataset.mode==='on' || btn.dataset.mode==='auto'){ fanIcon.classList.add('spin'); }
+            else { fanIcon.classList.remove('spin'); }
+          }
+        });
+      });
+    });
+
+    // AQI CHART
+    const ctx=document.getElementById('aqiChart');
+    new Chart(ctx,{
+      type:'line',
+      data:{labels:['8am','9am','10am','11am','12pm'],
+      datasets:[{label:'AQI',data:[42,55,60,70,50],borderColor:'#4caf50',fill:false}]},
+      options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true}}}
     });
   </script>
 </body>
