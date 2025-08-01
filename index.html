@@ -16,9 +16,51 @@
     .card{background:rgba(255,255,255,0.85);backdrop-filter:blur(8px);border-radius:16px;padding:20px;box-shadow:0 4px 15px rgba(0,0,0,0.05);border:1px solid rgba(255,255,255,0.6);}
     h2{text-align:center;margin:0 0 15px;font-size:20px;font-weight:600;}
     .aqi-value{font-size:48px;font-weight:600;text-align:center;padding:16px;border-radius:14px;margin-bottom:12px;color:#fff;transition:background 0.4s ease;}
-    .sensor-buttons{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:15px;}
-    .sensor-buttons button{background:#edf4ff;border:none;padding:10px 16px;border-radius:12px;font-size:14px;}
-    .env-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:center;font-weight:500;}
+    
+    /* SENSOR CARDS */
+    .sensor-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .sensor-card {
+      background: #f9fbff;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: transform 0.2s;
+    }
+    .sensor-card:hover { transform: translateY(-4px); }
+    .sensor-card .icon { font-size: 22px; margin-bottom: 4px; }
+    .sensor-card .value { font-size: 20px; font-weight: 600; }
+    .sensor-card .label { font-size: 12px; color: #666; margin-top: 2px; }
+    .sensor-card .bar {
+      background: #eee; border-radius: 8px; height: 6px; margin-top: 8px; overflow: hidden;
+    }
+    .sensor-card .bar div { height: 100%; transition: width 0.3s; }
+    .sensor-card[data-level="good"] .bar div { background: #4CAF50; }
+    .sensor-card[data-level="moderate"] .bar div { background: #FFC107; }
+    .sensor-card[data-level="bad"] .bar div { background: #F44336; }
+
+    /* ENVIRONMENT MINI GRID */
+    .env-mini-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      text-align: center;
+    }
+    .env-tile {
+      background: #eef3fa;
+      border-radius: 10px;
+      padding: 8px 6px;
+      font-size: 14px;
+    }
+    .env-tile span { display: block; font-weight: 600; font-size: 15px; margin-top: 2px; }
+    .env-tile small { font-size: 11px; color: #777; }
+
+    /* CONTROL PANEL */
     .controls .control-row{display:flex;justify-content:space-between;align-items:center;margin:14px 0;}
     .mode-buttons{display:flex;gap:6px;}
     .mode-btn{padding:6px 14px;border:1px solid #ccc;border-radius:20px;font-size:13px;cursor:pointer;}
@@ -28,6 +70,8 @@
     .fan-icon{display:inline-block;margin-left:8px;font-size:18px;}
     .spin{animation:spin 1s linear infinite;}
     @keyframes spin{100%{transform:rotate(360deg);}}
+
+    /* ANALYTICS */
     .tabs{text-align:center;margin-bottom:8px;}
     .tabs button{margin:5px;padding:6px 14px;border:1px solid #ccc;border-radius:8px;background:#f5f8fb;cursor:pointer;}
     #metric-controls{text-align:center;margin-bottom:10px;}
@@ -52,16 +96,64 @@
     <div id="main-pollutant">Main Pollutant: PM2.5</div>
     <p id="aqi-warning" style="color:green;">✅ Air quality is fine!</p>
   </div>
+  
+  <!-- NEW SENSOR & ENVIRONMENT -->
   <div class="card">
     <h2>Sensor & Environment</h2>
-    <div class="sensor-buttons">
-      <button>PM2.5: 12 μg/m³</button><button>PM10: 20 μg/m³</button><button>CO: 0.5 ppm</button>
-      <button>NO₂: 10 ppb</button><button>SO₂: 5 ppb</button><button>CO₂: 450 ppm</button><button>VOCs: Low</button>
+    <div class="sensor-grid">
+      <div class="sensor-card" data-level="good">
+        <div class="icon">🌫</div>
+        <div class="value">12</div>
+        <div class="label">PM2.5 (μg/m³)</div>
+        <div class="bar"><div style="width:20%"></div></div>
+      </div>
+      <div class="sensor-card" data-level="moderate">
+        <div class="icon">🌫</div>
+        <div class="value">20</div>
+        <div class="label">PM10 (μg/m³)</div>
+        <div class="bar"><div style="width:40%"></div></div>
+      </div>
+      <div class="sensor-card" data-level="good">
+        <div class="icon">🫁</div>
+        <div class="value">0.5</div>
+        <div class="label">CO (ppm)</div>
+        <div class="bar"><div style="width:10%"></div></div>
+      </div>
+      <div class="sensor-card" data-level="good">
+        <div class="icon">🏭</div>
+        <div class="value">10</div>
+        <div class="label">NO₂ (ppb)</div>
+        <div class="bar"><div style="width:25%"></div></div>
+      </div>
+      <div class="sensor-card" data-level="good">
+        <div class="icon">🌋</div>
+        <div class="value">5</div>
+        <div class="label">SO₂ (ppb)</div>
+        <div class="bar"><div style="width:10%"></div></div>
+      </div>
+      <div class="sensor-card" data-level="good">
+        <div class="icon">🪴</div>
+        <div class="value">450</div>
+        <div class="label">CO₂ (ppm)</div>
+        <div class="bar"><div style="width:35%"></div></div>
+      </div>
+      <div class="sensor-card" data-level="good">
+        <div class="icon">🧪</div>
+        <div class="value">Low</div>
+        <div class="label">VOCs</div>
+        <div class="bar"><div style="width:15%"></div></div>
+      </div>
     </div>
-    <div class="env-grid"><p>🌡 Temp: 26°C</p><p>💧 Humidity: 60%</p><p>🌬 Pressure: 1012 hPa</p><p>⛅ Weather: Sunny</p></div>
+    <div class="env-mini-grid">
+      <div class="env-tile">🌡<span>26°C</span><small>Temp</small></div>
+      <div class="env-tile">💧<span>60%</span><small>Humidity</small></div>
+      <div class="env-tile">🌬<span>1012 hPa</span><small>Pressure</small></div>
+      <div class="env-tile">⛅<span>Sunny</span><small>Weather</small></div>
+    </div>
   </div>
 </div>
 
+<!-- CONTROL PANEL + ANALYTICS giữ nguyên -->
 <div class="container">
   <div class="card controls">
     <h2>Control Panel</h2>
@@ -107,9 +199,7 @@
     </table>
     <h3 style="text-align:center;margin-top:18px;">Device Activity Log</h3>
     <table id="activity-log">
-      <thead>
-        <tr><th>Time</th><th>Fan Mode</th><th>Mist Mode</th><th>AQI Status</th><th>Recommendation</th></tr>
-      </thead>
+      <thead><tr><th>Time</th><th>Fan Mode</th><th>Mist Mode</th><th>AQI Status</th><th>Recommendation</th></tr></thead>
       <tbody id="activity-body"></tbody>
     </table>
   </div>
@@ -163,7 +253,7 @@
   document.querySelectorAll('#metric-controls input').forEach(chk=>chk.addEventListener('change',()=>{const ds=multiChart.data.datasets.find(d=>d.label===chk.value);ds.hidden=!chk.checked;multiChart.update();}));
   const tbody=document.getElementById('history-body');
   for(let i=0;i<labels.length;i++){const r=document.createElement('tr');r.innerHTML=`<td>${labels[i]}</td><td>${metrics.AQI[i]}</td><td>${metrics["PM2.5"][i]}</td><td>${metrics.PM10[i]}</td><td>${metrics.CO[i]}</td><td>${metrics["NO₂"][i]}</td><td>${metrics["SO₂"][i]}</td><td>${metrics["CO₂"][i]}</td><td>${metrics.VOCs[i]}</td><td>${metrics.Temp[i]}°C</td><td>${metrics.Humidity[i]}%</td><td>${metrics.Pressure[i]} hPa</td>`;tbody.appendChild(r);}
-  setInterval(()=>updateAQI(Math.floor(Math.random()*1000)),5000);
+  setInterval(()=>updateAQI(Math.floor(Math.random()*100)),5000);
 </script>
 </body>
 </html>
