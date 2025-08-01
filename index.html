@@ -16,6 +16,8 @@
     .card { background: #fff; border-radius: 14px; padding: 20px; box-shadow: 0 3px 8px rgba(0,0,0,0.05);}
     h2 { margin-top: 0; font-size: 20px; font-weight: 600; text-align: center; margin-bottom: 15px;}
     .aqi-value { font-size: 48px; font-weight: 600; text-align: center; padding: 14px; border-radius: 12px; margin-bottom: 12px; color: #fff; transition: background 0.3s ease;}
+    .main-pollutant { text-align: center; font-size: 18px; font-weight: 500; margin: 8px 0;}
+    #aqi-warning { text-align: center; font-weight: 500; margin-top: 6px; }
     .sensor-buttons { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
     .sensor-buttons button { background: #e8f0fe; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 500; transition: background 0.2s;}
     .sensor-buttons button:hover { background: #d0e2ff;}
@@ -55,6 +57,8 @@
     <div class="card">
       <h2>AQI</h2>
       <div id="aqi-box" class="aqi-value">AQI: 42 (Good)</div>
+      <div id="main-pollutant" class="main-pollutant">Main Pollutant: PM2.5</div>
+      <p id="aqi-warning" style="color: orange;">⚠️ AQI moderate, consider ventilation!</p>
     </div>
     <div class="card">
       <h2>Sensor Data</h2>
@@ -70,13 +74,7 @@
     </div>
   </div>
 
-  <!-- REAL-TIME AIR QUALITY -->
-  <div class="card" style="margin:20px;">
-    <h2>Real-time Air Quality</h2>
-    <p id="aqi-warning" style="text-align:center; color: orange;">⚠️ AQI moderate, consider ventilation!</p>
-  </div>
-
-  <!-- CONTROL PANEL (chuyển xuống dưới Real-time Air Quality) -->
+  <!-- CONTROL PANEL -->
   <div class="card controls" style="margin:20px;">
     <h2>Control Panel</h2>
     <p>Filter Fan:
@@ -132,14 +130,16 @@
     function updateAQI(aqi) {
       const aqiBox = document.getElementById('aqi-box');
       const aqiWarning = document.getElementById('aqi-warning');
-      let color = '#4CAF50', text = "Good";
-      if (aqi > 300) { color = '#6A1B9A'; text = "Hazardous"; }
-      else if (aqi > 200) { color = '#9C27B0'; text = "Very Unhealthy"; }
-      else if (aqi > 150) { color = '#F44336'; text = "Unhealthy"; }
-      else if (aqi > 100) { color = '#FF9800'; text = "Unhealthy (Sensitive)"; }
-      else if (aqi > 50) { color = '#FFEB3B'; text = "Moderate"; }
+      const mainPollutant = document.getElementById('main-pollutant');
+      let color = '#4CAF50', text = "Good", pollutant = "PM2.5";
+      if (aqi > 300) { color = '#6A1B9A'; text = "Hazardous"; pollutant = "PM2.5"; }
+      else if (aqi > 200) { color = '#9C27B0'; text = "Very Unhealthy"; pollutant = "PM10"; }
+      else if (aqi > 150) { color = '#F44336'; text = "Unhealthy"; pollutant = "NO₂"; }
+      else if (aqi > 100) { color = '#FF9800'; text = "Unhealthy (Sensitive)"; pollutant = "CO₂"; }
+      else if (aqi > 50) { color = '#FFEB3B'; text = "Moderate"; pollutant = "PM2.5"; }
       aqiBox.style.background = color;
       aqiBox.textContent = `AQI: ${aqi} (${text})`;
+      mainPollutant.textContent = `Main Pollutant: ${pollutant}`;
       aqiWarning.style.color = color;
       aqiWarning.textContent = aqi > 100 ? "⚠️ Poor AQI! Consider filtration!" : "✅ Air quality is fine!";
     }
