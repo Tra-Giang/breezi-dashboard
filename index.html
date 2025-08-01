@@ -15,9 +15,9 @@
     .container{display:grid;grid-template-columns:1fr 1fr;gap:22px;padding:20px;}
     .card{background:rgba(255,255,255,0.85);backdrop-filter:blur(8px);border-radius:16px;padding:20px;box-shadow:0 4px 15px rgba(0,0,0,0.05);border:1px solid rgba(255,255,255,0.6);}
     h2{text-align:center;margin:0 0 15px;font-size:20px;font-weight:600;}
-    .aqi-value{font-size:48px;font-weight:600;text-align:center;padding:16px;border-radius:14px;margin-bottom:12px;color:#fff;background:#F44336;} /* Fixed Unhealthy */
+    .aqi-value{font-size:48px;font-weight:600;text-align:center;padding:16px;border-radius:14px;margin-bottom:12px;color:#fff;background:#F44336;}
     #main-pollutant {font-weight:700;font-size:18px;text-align:center;margin:8px 0;color:#d32f2f;}
-    #aqi-warning {text-align:center;font-size:15px;color:#333;} /* Fixed color */
+    #aqi-warning {text-align:center;font-size:15px;color:#333;}
 
     /* ENV MINI INSIDE AQI */
     .env-mini-grid {display:grid;grid-template-columns:repeat(4,1fr);gap:10px;text-align:center;margin-top:15px;}
@@ -153,7 +153,6 @@
   let fanMode = "Auto", mistMode = "Auto";
 
   function logActivity(aqi, status) {
-    // Chỉ log khi quạt hoặc mist đang bật
     if (fanMode !== "Off" || mistMode !== "Off") {
       const tbody = document.getElementById('activity-body');
       const now = new Date().toLocaleTimeString();
@@ -191,7 +190,6 @@
                      btn.dataset.mode === "on" ? "On" : "Off";
         }
 
-        // Log chỉ khi bật
         if (fanMode !== "Off" || mistMode !== "Off") {
           logActivity(165, "Mode Change");
         }
@@ -199,8 +197,69 @@
     });
   });
 
-  // Log ban đầu
   logActivity(165, "Initial Startup");
+
+  // ================= BIỂU ĐỒ CHART.JS ==================
+  const ctx = document.getElementById('multiChart').getContext('2d');
+  const labels = Array.from({ length: 12 }, (_, i) => `${i + 1}h`);
+  const multiChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'AQI',
+          data: [120, 135, 150, 165, 180, 170, 160, 140, 130, 125, 115, 110],
+          borderColor: '#F44336',
+          backgroundColor: 'rgba(244,67,54,0.1)',
+          tension: 0.4,
+          fill: true
+        },
+        {
+          label: 'PM2.5',
+          data: [35, 40, 45, 55, 60, 58, 52, 48, 44, 42, 40, 38],
+          borderColor: '#2196F3',
+          backgroundColor: 'rgba(33,150,243,0.1)',
+          tension: 0.4,
+          fill: true
+        },
+        {
+          label: 'PM10',
+          data: [60, 65, 70, 80, 85, 82, 78, 72, 68, 66, 63, 60],
+          borderColor: '#FFC107',
+          backgroundColor: 'rgba(255,193,7,0.1)',
+          tension: 0.4,
+          fill: true
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'top' } },
+      scales: {
+        x: { title: { display: true, text: 'Time' } },
+        y: { title: { display: true, text: 'Value' }, beginAtZero: true }
+      }
+    }
+  });
+
+  setInterval(() => {
+    const newAQI = Math.floor(100 + Math.random() * 100);
+    const newPM25 = Math.floor(30 + Math.random() * 30);
+    const newPM10 = Math.floor(50 + Math.random() * 40);
+
+    multiChart.data.datasets[0].data.push(newAQI);
+    multiChart.data.datasets[1].data.push(newPM25);
+    multiChart.data.datasets[2].data.push(newPM10);
+    multiChart.data.labels.push(new Date().toLocaleTimeString());
+
+    if (multiChart.data.labels.length > 12) {
+      multiChart.data.labels.shift();
+      multiChart.data.datasets.forEach(d => d.data.shift());
+    }
+
+    multiChart.update();
+  }, 5000);
 </script>
 </body>
 </html>
